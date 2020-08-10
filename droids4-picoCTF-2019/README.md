@@ -1,21 +1,22 @@
-## Droids4
-This is the final challenge in pico's mobile reversing series. 
+# Droids4
+This is the final challenge in picoCTF2019's mobile reversing series. 
 
 Description:
-> reverse the pass, patch the file, get the flag. Check out this [file](https://2019shell1.picoctf.com/static/096cad83a0fefbccfd0cdceab3911bb8/four.apk). You can also find the file in /problems/droids4_0_99ba4f323d3d194b5092bf43d97e9ce9.
+> reverse the pass, patch the file, get the flag. Check out this [file](https://github.com/Samwise74/Writeups/raw/master/droids4-picoCTF-2019/four.apk). You can also find the file in /problems/droids4_0_99ba4f323d3d194b5092bf43d97e9ce9.
 
 Category: reversing
 
-### Initial Reversing
-#### The main screen of the app:
+## Initial Analysis
+#### Screenshot of the app:
+![Main Screen](https://github.com/Samwise74/Writeups/blob/master/droids4-picoCTF-2019/images/main_screen.png)
 
-As we can see from the description, we'll be combining both aspects of droids2 and droids3. Not only will we need to patch the file, but we'll need to reverse the password as well. 
+As we can see from the description, we'll be combining both aspects of droids2 and droids3. Not only will we need to patch the file, but we'll need to reverse the app to get the correct password as well. 
 
-Let's start by reversing the apk file to see how it works. We're going to use [apktool](https://ibotpeaches.github.io/Apktool/), an outstanding tool for reversing android apps. Run it with `java -jar apktool.jar four.apk`. Doing so will create a directory called `four`, which will have a subdirectory `smali`. Smali is the human-readable version of Dalvik bytecode. This directory essentially contains the assembly code for the app. However, there's only one file we care about, `out/com/hellocmu/picoctf/FlagstaffHill.smali`. This file contains the instructions that generate the password, which we will reverse later, and the area that we need to patch. Trying to read Smali isn't very fun, so let's convert it to Java source code. 
+Let's start by decompiling the apk file. We're going to use [apktool](https://ibotpeaches.github.io/Apktool/), an outstanding tool for reversing android apps. Run it with `java -jar apktool.jar four.apk`. Doing so will create a directory called `four`, which will have a subdirectory `smali`. Smali is the human-readable version of Dalvik bytecode. This directory essentially contains the assembly code for the app. That being said, there's only one file we care about, `out/com/hellocmu/picoctf/FlagstaffHill.smali`. This file contains the instructions that generate the password, which we will reverse later, and the area that we need to patch. Trying to read Smali isn't very fun, so let's convert it to Java source code. 
 
-There are many tools and methods to convert Smali --> Java source code, but I used Konloch's [Bytecodeviewer](https://bytecodeviewer.com/).
+There are many tools and methods to convert Smali to Java source code, but I used Konloch's [Bytecodeviewer](https://bytecodeviewer.com/).
 
-##### FlagstaffHill.class:
+### FlagstaffHill.class:
 ```Java
 package com.hellocmu.picoctf;
 
@@ -46,23 +47,26 @@ public class FlagstaffHill {
 }
 ```
 ####
-### Step 1: Patching the file
-The first thing we need to do is patch the file. The problem is that the function that returns the flag is never called. The place that we'd expect to see it is replaced with `"call it"`, a hint from the author no doubt. To call the function, we need to edit the `FlagstaffHill.smali` file. 
+## Step 1: Patching the file
+The first thing we need to do is patch the file. The problem is that the function that returns the flag is never called. The place that we'd expect to see it is replaced with `"call it"`, a hint from the challenge author no doubt. To call the function, we need to edit the `FlagstaffHill.smali` file. 
 ```
+const/4 v5, 0x0
+
 if-eqz v5, :cond_ba
 
 const-string v5, "call it" #this is the part we need to change
 
 return-object v5
 ```
-Replace the middle line with 
+Remove the first line and replace the middle line with 
 ```
-invoke-static {p0}, Lcom/hellocmu/picoctf/FlagstaffHill;->cardamom(Ljava/lang/String;)Ljava/lang/String;`. This will call the function that returns the flag when we input the correct password.
+invoke-static {p0}, Lcom/hellocmu/picoctf/FlagstaffHill;->cardamom(Ljava/lang/String;)Ljava/lang/String;`. 
 ```
+This will call the function that returns the flag when we input the correct password.
 
 Next, we need to recompile the app so we can run the patched version. Run apktool again with `java -jar apktool.jar build -o patched-four.apk four/`.
 
-Now that we've patched the app, we need to sign it so we can actually install it. Fortunately, both the tools we need come pre-shipped with Java. First, we need to create a key using keytool:
+Now that we've patched the app, we need to sign it so we can actually install it. Fortunately, both the tools we need come pre-installed with Java. First, we need to create a key using keytool:
 ```
 keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
 ```
@@ -70,25 +74,27 @@ Then sign the apk with jarsigner:
 ```
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore my_application.apk alias_name
 ```
-### Step 2: Reversing the Password
-This is the easy part. Since we have the Java source code, it essentially becomes a very basic reversing challenge. 
+## Step 2: Reversing the Password
+This is the easy part. Since we already have the Java source code, it's now essentially a very basic reversing challenge. 
 
-We can see that four strings of three lowercase A's are initialized, then one-by-one the A's are added to various values. To find out what any specific letter is, we take the ascii value of 'a' (97), add to it the number that is added in the program, and convert that number back to ascii. Following this method we get:
+We can see that four variables each strings of three lowercase A's are initialized, then one-by-one various values are added to each character in said variables. To find out what each specific letter becomes, we take the ascii value of 'a' (97), add to it the number that is added in the program, and convert that number back to ascii. Following this method we get:
 ```Java
 var2 = "ets"
 var3 = "hab"
 var5 = "alp"
 var4 = "oup"
 ```
-Then there are a number of concatenations that happen. 
-* "" is concatenated with "alp"
-* "alp" is contacted with "hab"
-* "alphab" is contacted with "ets"
-* "alphabets" is concatenated with "oup"
+Nest, there are a number of concatenations that happen. 
+* "" is concatenated with "alp" (var5)
+* "alp" is concatenated with "hab" (var3)
+* "alphab" is concatenated with "ets" (var2)
+* "alphabets" is concatenated with "oup" (var4)
 
 Which produces a final password of `alphabetsoup`.
-### Conclusion
+## Conclusion
 After installing the patched and signed app, enter the password to reveal the flag:
 `picoCTF{not.particularly.silly}`
-##### The message we get from the unpatched version:
-##### Patched screenshot:
+### The message we get from the unpatched version:
+![unpatched-correct-password](https://github.com/Samwise74/Writeups/blob/master/droids4-picoCTF-2019/images/unpatched_correct_password.png)
+### Screenshot of patched app with flag:
+![patched-correct-password](https://github.com/Samwise74/Writeups/blob/master/droids4-picoCTF-2019/images/patched_correct_password.png)
