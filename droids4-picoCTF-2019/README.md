@@ -77,14 +77,14 @@ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.
 ## Step 2: Reversing the Password
 This is the easy part. Since we already have the Java source code, it's now essentially a very basic reversing challenge. 
 
-We can see that four variables each strings of three lowercase A's are initialized, then one-by-one various values are added to each character in said variables. To find out what each specific letter becomes, we take the ascii value of 'a' (97), add to it the number that is added in the program, and convert that number back to ascii. Following this method we get:
+We can see that four variables, each strings of three lowercase A's, are initialized. Then, one-by-one various values are added to each character in said variables. To find out what each specific letter becomes, we take the ascii value of 'a' (97), add to it the number that is added in the program, and convert that number back to ascii. Following this method we get:
 ```Java
 var2 = "ets"
 var3 = "hab"
 var5 = "alp"
 var4 = "oup"
 ```
-Nest, there are a number of concatenations that happen. 
+Next, there are a number of concatenations that happen. 
 * "" is concatenated with "alp" (var5)
 * "alp" is concatenated with "hab" (var3)
 * "alphab" is concatenated with "ets" (var2)
