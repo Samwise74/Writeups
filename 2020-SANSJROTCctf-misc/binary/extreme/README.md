@@ -9,7 +9,7 @@ $ file program
 program: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, BuildID[sha1]=c1c0ad62410be4f2e5ebdadc26b5f3cb68b7ad1b, stripped
 
 $ checksec program
-[*] '/mnt/b/my_repos/Writeups/misc-JROTCctf-2020/binary/extreme/program'
+[*] '/mnt/b/my_repos/Writeups/2020-SANSTROCTctf-misc/binary/extreme/program'
      Arch:     amd64-64-little 
      RELRO:    Partial RELRO    
      Stack:    No canary found   
@@ -66,7 +66,7 @@ Your challenge was asdf
 The server challenge was vbfBgtby.KHzIJxeJjEpszaf..aik.dy.jl.CewBapeAdtwED
 Insufficient challenge length.
 ```
-Bam! We got the program to generate the same challenge twice. Now all that's left to do is to calculate what the program will generate a few minutes from now and send it at the right time. I created [this](https://github.com/Samwise74/Writeups/blob/master/misc-JROTCctf-2020/binary/extreme/bx01.py) simple python script to do that for me.
+Bam! We got the program to generate the same challenge twice. Now all that's left to do is to calculate what the program will generate a few minutes from now and send it at the right time. I created [this](https://github.com/Samwise74/Writeups/blob/master/2020-SANSTROCTctf-misc/binary/extreme/bx01.py) simple python script to do that for me.
 ```
 current time: 14:02:00
 Secret is IvkKBrth.jGkakJruwmxu.DlrBkAoohaJr.pAqorrgCkqpBC.

@@ -2,13 +2,13 @@
 This is the final challenge in picoCTF2019's mobile reversing series. 
 
 Description:
-> reverse the pass, patch the file, get the flag. Check out this [file](https://github.com/Samwise74/Writeups/raw/master/droids4-picoCTF-2019/four.apk). You can also find the file in /problems/droids4_0_99ba4f323d3d194b5092bf43d97e9ce9.
+> reverse the pass, patch the file, get the flag. Check out this [file](https://github.com/Samwise74/Writeups/raw/master/2019-picoCTF-droids4/four.apk). You can also find the file in /problems/droids4_0_99ba4f323d3d194b5092bf43d97e9ce9.
 
 Category: reversing
 
 ## Initial Analysis
 #### Screenshot of the app:
-![Main Screen](https://github.com/Samwise74/Writeups/blob/master/droids4-picoCTF-2019/images/main_screen.png)
+![Main Screen](https://github.com/Samwise74/Writeups/blob/master/2019-picoCTF-droids4/images/main_screen.png)
 
 As we can see from the description, we'll be combining both aspects of droids2 and droids3. Not only will we need to patch the file, but we'll need to reverse the app to get the correct password as well. 
 
@@ -95,6 +95,6 @@ Which produces a final password of `alphabetsoup`.
 After installing the patched and signed app, enter the password to reveal the flag:
 `picoCTF{not.particularly.silly}`
 ### The message we get from the unpatched version:
-![unpatched-correct-password](https://github.com/Samwise74/Writeups/blob/master/droids4-picoCTF-2019/images/unpatched_correct_password.png)
+![unpatched-correct-password](https://github.com/Samwise74/Writeups/blob/master/2019-picoCTF-droids4/images/unpatched_correct_password.png)
 ### Screenshot of patched app with flag:
-![patched-correct-password](https://github.com/Samwise74/Writeups/blob/master/droids4-picoCTF-2019/images/patched_correct_password.png)
+![patched-correct-password](https://github.com/Samwise74/Writeups/blob/master/2019-picoCTF-droids4/images/patched_correct_password.png)
