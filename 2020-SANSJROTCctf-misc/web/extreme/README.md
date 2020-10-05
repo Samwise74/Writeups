@@ -37,6 +37,6 @@ There are a few lines that we don't need and a couple of bits that are the same 
 10
 00
 ```
-You can probably see where this is going. If we convert binary -> decimal this equals 2020. To get 2021, we just need to flip that last bit from a 0 to a 1. To do this in this specific application, we change the last space on the 7th line of the year variable to a tab. Easiest way to do that is to just edit it on our own copy of the html page. I've included [this](https://github.com/Samwise74/Writeups/blob/master/2020-SANSTROCTctf-misc/web/extreme/wx01.zip) zip file with the 2021 version of the page.
+You can probably see where this is going. If we convert binary -> decimal this equals 2020. To get 2021, we just need to flip that last bit from a 0 to a 1. To do this in this specific application, we change the last space on the 7th line of the year variable to a tab. Easiest way to do that is to just edit it on our own copy of the html page. I've included [this](https://github.com/Samwise74/Writeups/blob/master/2020-SANSJROTCctf-misc/web/extreme/wx01.zip) zip file with the 2021 version of the page.
 #### Flag
 `toTh3Fu7ure!`

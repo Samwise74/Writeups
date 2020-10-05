@@ -18,6 +18,6 @@ This one took me WAY longer than it should have and I read WAY too far into the 
 #### Description
 Our developer has been creating their own captcha system. We informed them it was a bad idea and surprise surprise they're running into issues with it. Have a look at https://jrotc-wm03.allyourbases.co and see if you can solve the captcha and indeed what's wrong with what they've built!
 #### Solution
-If you look at the style attribute for the SVGs that make up the captcha, you'll notice that the second one is colored white. Change #000088 to any other color. See [captcha.html](https://github.com/Samwise74/Writeups/blob/master/2020-SANSTROCTctf-misc/web/medium/captcha.html)
+If you look at the style attribute for the SVGs that make up the captcha, you'll notice that the second one is colored white. Change #000088 to any other color. See [captcha.html](https://github.com/Samwise74/Writeups/blob/master/2020-SANSJROTCctf-misc/web/medium/captcha.html)
 #### Flag
 `css_is_hard`

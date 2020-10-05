@@ -2,7 +2,7 @@
 #### Description
 There's a zip file we need to get into at [https://jrotc-files.allyourbases.co/bh01.zip](https://jrotc-files.allyourbases.co/bh01.zip). All efforts so far have failed but maybe we're not trying hard enough. We do know that the password is base64 encoded however. Can you extract the file?
 #### Solution
-We need to bruteforce the zip file, and we need to make sure to base64 encode the passwords. A simple python script will do the trick. After running [zipcrack.py](https://github.com/Samwise74/Writeups/blob/master/2020-SANSTROCTctf-misc/binary/hard/zipcrack.py), the flag.txt file is extracted to reveal the flag.
+We need to bruteforce the zip file, and we need to make sure to base64 encode the passwords. A simple python script will do the trick. After running [zipcrack.py](https://github.com/Samwise74/Writeups/blob/master/2020-SANSJROTCctf-misc/binary/hard/zipcrack.py), the flag.txt file is extracted to reveal the flag.
 #### Flag
 ``avoid_common_pws!````
 ## Binary Hard 2
