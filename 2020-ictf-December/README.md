@@ -2,12 +2,19 @@
 ## Race Competition
 #### Description
 > Hey there! One of my friends is running a race competition! Will you get the first place? He also told me that special participants have also the right to claim a flag, but I don't know nothing about tradings...
+
 **Attachments**
+
 https://racecompetition.ctfchallenge.ga/
+
 **Category**
+
 Misc
+
 **Points**
+
 200
+
 #### Explanation
 Taking a look around the website, we see that when we input a name it gives us a unique cookie like `name="2337055namehere"`. Clicking "submit" redirects us to the `trade` page on which we can see our money, amount of toys, and options to sell or buy more toys. We can sell as many toys as we want, but we can only buy as much as our balance will allow.
 
