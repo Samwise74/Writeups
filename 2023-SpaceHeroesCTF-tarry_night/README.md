@@ -2,7 +2,7 @@
 
 **tl;dr:**
 
-```
+```bash
 $ # fix gzip file
 $ printf '\x1f\x8b\x08' > patched.tar.gz
 $ cat tarry_night.tar.gz >> patched.tar.gz
@@ -28,7 +28,7 @@ MD5 (tarry_night.tar.gz) = ad711ccde1ef02fb3611cae67477dde2
 
 We are given a file with the extension `.tar.gz`, but `file` doesn't recognize the filetype of this artifact. 
 
-```
+```bash
 $ file tarry_night.tar.gz 
 tarry_night.tar.gz: data
 ```
@@ -47,7 +47,7 @@ Let's assume, at least for starters, that the challenge authors are not lying to
 
 If we compare that with the first few bytes of the artifact, it doesn't line up at all. Most significantly, we don't see the magic bytes (`\x1f\x8b`) that would identify this file as GZIP:
 
-```
+```bash
 $ xxd tarry_night.tar.gz | head -2
 00000000: 08ad 372b 6400 0374 6172 7279 5f6e 6967  ..7+d..tarry_nig
 00000010: 6874 2e74 6172 00ec fc65 54a5 4bb3 268a  ht.tar...eT.K.&.
@@ -55,7 +55,7 @@ $ xxd tarry_night.tar.gz | head -2
 
 For file recovery challenges like these, it's usually best to compare a known-good file of the same filetype as whatever artifact we're working on. That typically makes it pretty easy to see what's out of place. Here is the header of another random `.tar.gz` in my ctf directory:
 
-```
+```bash
 $ xxd ./hack-a-sat/pwn/warning_public.tar.gz | head -2
 00000000: 1f8b 0800 0000 0000 0003 ec5c 0d74 1455  ...........\.t.U
 00000010: 967e dd49 9310 0209 0a8a 8052 2820 18d2  .~.I.......R( ..
@@ -65,7 +65,7 @@ Notice how the challenge artifact has the name of the file "tarry_night.tar" nea
 
 Let's try prepending these missing header bytes onto the artifact:
 
-```
+```bash
 $ printf '\x1f\x8b\x08' > patched.tar.gz
 $ cat tarry_night.tar.gz >> patched.tar.gz
 $ file patched.tar.gz 
@@ -74,7 +74,7 @@ patched.tar.gz: gzip compressed data, was "tarry_night.tar", last modified: Mon 
 
 Nice! We get seemingly valid GZIP data. Let's decompress it
 
-```
+```bash
 $ gunzip patched.tar.gz
 $ file patched.tar 
 patched.tar: data
@@ -85,7 +85,7 @@ It's a valid `.gz`, but not a valid `.tar.gz`.
 
 We need to figure out what's going on with the decompressed tar file. Let's start with a known-good file of this type:
 
-```
+```bash
 $ xxd ./idekCTF/side_effect/side_effect.tar | head -10
 00000000: 6174 7461 6368 6d65 6e74 732f 0000 0000  attachments/....
 00000010: 0000 0000 0000 0000 0000 0000 0000 0000  ................
@@ -101,7 +101,7 @@ $ xxd ./idekCTF/side_effect/side_effect.tar | head -10
 
 The good file starts with the name of a directory followed by a bunch of nulls, and if we consult [some documentation](https://www.gnu.org/software/tar/manual/html_node/Standard.html), we see that the start of a tar block begins with a `char name[100];`. This matches what we're seeing perfectly, so what's going on with the artifact?
  
-```
+```bash
 $ xxd patched.tar | head -10
 00000000: 6a60 6d6b 2266 7c6b 0c0c 0c0c 0c0c 0c0c  j`mk"f|k........
 00000010: 0c0c 0c0c 0c0c 0c0c 0c0c 0c0c 0c0c 0c0c  ................
@@ -124,7 +124,7 @@ We see a bunch of repeating `\x0c`'s where there should be nulls. At this point,
 
 This confirms our assumption, let's get the whole file with xortool:
 
-```
+```bash
 $ xortool -b -l 1 patched.tar 
 256 possible key(s) of length 1:
 \x0c
