@@ -1,6 +1,7 @@
 ### Writeups
 Cool writeup stuff :thumbsup:
 
+* [2023-SpaceHeroesCTF-tarry_night](https://github.com/Samwise74/Writeups/tree/master/2023-SpaceHeroesCTF-tarry_night)
 * [2022-USCyberOpen-archival](https://github.com/Samwise74/eagles-writeups)
 * [2021-Battelle-ItCanBeDone](https://github.com/Samwise74/Writeups/tree/master/2021-Battelle-ItCanBeDone)
 * [2020-ictf-December](https://github.com/Samwise74/Writeups/tree/master/2020-ictf-December)
